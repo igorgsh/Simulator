@@ -54,7 +54,6 @@ int ValueGen::GetIntValue() {
 	}
 }
 double ValueGen::GetRealValue() {
-	//Serial.println("Get Real (" + String(isRandom) + ")=" + String(RealValue));
 	if (isRandom) {
 		return (double)random(RealMinValue * factor, RealMaxValue* factor) / (double)factor;
 	}
@@ -69,9 +68,9 @@ void ValueGen::Set(int value, int minValue, int maxValue) {
 	IntMaxValue = maxValue;
 	isRandom = (maxValue > minValue);
 
-	RealValue = -1.0;
-	RealMinValue = -1.0;
-	RealMaxValue = -1.0;
+	RealValue = (double)value;
+	RealMinValue = (double)minValue;
+	RealMaxValue = (double)maxValue;
 }
 
 void ValueGen::Set(double value, double minValue, double maxValue) {
@@ -80,8 +79,8 @@ void ValueGen::Set(double value, double minValue, double maxValue) {
 	RealMaxValue = maxValue;
 	isRandom = (maxValue > minValue);
 
-	IntValue = -1;
-	IntMinValue = -1;
-	IntMaxValue = -1;
+	IntValue = (int)value;
+	IntMinValue = (int)minValue;
+	IntMaxValue = (int)maxValue;
 
 }

@@ -55,15 +55,11 @@ double Simulator::GetRealResult(int pin) {
 	}
 	return -999.9999;
 }
-/*
-bool Simulator::SetValueGen(int ValueGenNumber, const ValueGen* ValueGen0) {
-ValueGens[ValueGenNumber] = new ValueGen(ValueGen0);
-}
-*/
 bool Simulator::SetValueGen(int ValueGenNumber, int pin, int value, int minValue, int maxValue) {
 	int p = findPin(pin);
 	if (ValueGenNumber >= 0 && ValueGenNumber < numberOfValueGens && p >= 0 && p < numberOfPins) {
 		ValueGens[ValueGenNumber][p].Set(value, minValue, maxValue);
+		ValueGens[ValueGenNumber][p].Set((double)value, (double)minValue, (double)maxValue);
 		return true;
 	}
 	return false;
@@ -73,6 +69,7 @@ bool Simulator::SetValueGen(int ValueGenNumber, int pin, double value, double mi
 	int p = findPin(pin);
 	if (ValueGenNumber >= 0 && ValueGenNumber < numberOfValueGens && p >= 0 && p < numberOfPins) {
 		ValueGens[ValueGenNumber][p].Set(value, minValue, maxValue);
+		ValueGens[ValueGenNumber][p].Set((int)value, (int)minValue, (int)maxValue);
 		return true;
 	}
 	return false;

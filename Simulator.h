@@ -7,20 +7,26 @@
 
 #ifndef _Simulator_h
 #define _Simulator_h
-
+#include "Arduino.h"
+/*
 #if defined(ARDUINO) && ARDUINO >= 100
 	#include "arduino.h"
 #else
 	#include "WProgram.h"
 #endif
+*/
 #include "SigmaKeypad.h"
 #include "ValueGen.h"
 
 class Simulator
 {
 public:
-	Simulator(int numberOfValueGens, int numberOfPins, byte* keypadRowPins, byte* keypadColPins);
-	Simulator(int numberOfValueGens, int numberOfPins, SigmaKeypad* keypad=NULL);
+	Simulator(int numberOfValueGens, int numberOfPins, const byte* pinMap);
+	Simulator(int numberOfValueGens, int numberOfPins, const byte* pinMap, SigmaKeypad* keypad);
+	Simulator(int numberOfValueGens, int numberOfPins, const byte* pinMap, byte* keypadRowPins, byte* keypadColPins);
+
+//	Simulator(int numberOfValueGens, int numberOfPins, byte* keypadRowPins, byte* keypadColPins);
+//	Simulator(int numberOfValueGens, int numberOfPins, SigmaKeypad* keypad=NULL);
 	int GetValueGenNumber() { return ValueGenNumber; };
 	void SetValueGenNumber(int value) { if (value >= 0 && value < numberOfValueGens) { ValueGenNumber = value; }; };
 	int GetIntResult(int pin);
@@ -37,7 +43,9 @@ private:
 	int numberOfPins = 0;
 	SigmaKeypad* keypad;
 	ValueGen** ValueGens;
-	void init(int numberOfValueGens, int numberOfPins, SigmaKeypad* keypad);
+	const byte* pinMap;
+	void init(int numberOfValueGens, int numberOfPins,const byte* pinMap, SigmaKeypad* keypad);
+	int findPin(int pin);
 
 };
 

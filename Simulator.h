@@ -27,24 +27,24 @@ public:
 
 //	Simulator(int numberOfValueGens, int numberOfPins, byte* keypadRowPins, byte* keypadColPins);
 //	Simulator(int numberOfValueGens, int numberOfPins, SigmaKeypad* keypad=NULL);
-	int GetValueGenNumber() { return ValueGenNumber; };
-	void SetValueGenNumber(int value) { if (value >= 0 && value < numberOfValueGens) { ValueGenNumber = value; }; };
+	int GetCaseNumber() { return CaseNumber; };
+	void SetCaseNumber(int value) { if (value >= 0 && value < numberOfCase) { CaseNumber = value; }; };
 	int GetIntResult(int pin);
 	double GetRealResult(int pin);
 	//	bool SetValueGen(int ValueGenNumber, const ValueGen* ValueGen0);
-	bool SetValueGen(int ValueGenNumber, int pin, int value, int minValue = 0, int maxValue = 0);
-	bool SetValueGen(int ValueGenNumber, int pin, double value, double minValue = 0, double maxValue = 0);
-
+	bool SetPinValue(int ValueGenNumber, int pin, int value, int minValue = 0, int maxValue = 0);
+	bool SetPinValue(int ValueGenNumber, int pin, double value, double minValue = 0, double maxValue = 0);
+	bool SetCaseValues(int newCaseNumber, int originalNumber);
 	bool loop();
 
 private:
-	int ValueGenNumber = -1;
-	int numberOfValueGens = 0;
+	int CaseNumber = -1;
+	int numberOfCase = 0;
 	int numberOfPins = 0;
 	SigmaKeypad* keypad;
-	ValueGen** ValueGens;
+	ValueGen** CaseValues;
 	const byte* pinMap;
-	void init(int numberOfValueGens, int numberOfPins,const byte* pinMap, SigmaKeypad* keypad);
+	void init(int numberOfCase, int numberOfPins,const byte* pinMap, SigmaKeypad* keypad);
 	int findPin(int pin);
 
 };

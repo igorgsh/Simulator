@@ -84,3 +84,9 @@ void ValueGen::Set(double value, double minValue, double maxValue) {
 	IntMaxValue = (int)maxValue;
 
 }
+
+void ValueGen::Copy(ValueGen* newValue) {
+	newValue->Set(RealValue, RealMinValue, RealMaxValue);
+	newValue->Set(IntValue, IntMinValue, IntMaxValue);
+	newValue->isRandom = isRandom;
+}

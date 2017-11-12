@@ -30,20 +30,20 @@ int Simulator::findPin(int pin) {
 
 
 void Simulator::init(int numberOfValueGens, int numberOfPins,const byte* pinMap, SigmaKeypad* keypad) {
-	this->numberOfValueGens = numberOfValueGens;
+	this->numberOfCase = numberOfValueGens;
 	this->numberOfPins = numberOfPins;
 	this->keypad = keypad;
 	this->pinMap = pinMap;
-	ValueGens = new ValueGen*[numberOfValueGens];
+	CaseValues = new ValueGen*[numberOfValueGens];
 	for (int i = 0; i < numberOfValueGens; i++) {
-		ValueGens[i] = new ValueGen[numberOfPins];
+		CaseValues[i] = new ValueGen[numberOfPins];
 	}
 }
 
 int Simulator::GetIntResult(int pin) {
 	int p = findPin(pin);
 	if (p != -1) {
-		return ValueGens[ValueGenNumber][p].GetIntValue();
+		return CaseValues[CaseNumber][p].GetIntValue();
 	}
 	return -9999;
 }
@@ -51,36 +51,49 @@ int Simulator::GetIntResult(int pin) {
 double Simulator::GetRealResult(int pin) {
 	int p = findPin(pin);
 	if (p != -1) {
-		return ValueGens[ValueGenNumber][p].GetRealValue();
+		return CaseValues[CaseNumber][p].GetRealValue();
 	}
 	return -999.9999;
 }
-bool Simulator::SetValueGen(int ValueGenNumber, int pin, int value, int minValue, int maxValue) {
+bool Simulator::SetPinValue(int ValueGenNumber, int pin, int value, int minValue, int maxValue) {
 	int p = findPin(pin);
-	if (ValueGenNumber >= 0 && ValueGenNumber < numberOfValueGens && p >= 0 && p < numberOfPins) {
-		ValueGens[ValueGenNumber][p].Set(value, minValue, maxValue);
-		ValueGens[ValueGenNumber][p].Set((double)value, (double)minValue, (double)maxValue);
+	if (ValueGenNumber >= 0 && ValueGenNumber < numberOfCase && p >= 0 && p < numberOfPins) {
+		CaseValues[ValueGenNumber][p].Set(value, minValue, maxValue);
+		CaseValues[ValueGenNumber][p].Set((double)value, (double)minValue, (double)maxValue);
 		return true;
 	}
 	return false;
 }
 
-bool Simulator::SetValueGen(int ValueGenNumber, int pin, double value, double minValue, double maxValue) {
+bool Simulator::SetPinValue(int ValueGenNumber, int pin, double value, double minValue, double maxValue) {
 	int p = findPin(pin);
-	if (ValueGenNumber >= 0 && ValueGenNumber < numberOfValueGens && p >= 0 && p < numberOfPins) {
-		ValueGens[ValueGenNumber][p].Set(value, minValue, maxValue);
-		ValueGens[ValueGenNumber][p].Set((int)value, (int)minValue, (int)maxValue);
+	if (ValueGenNumber >= 0 && ValueGenNumber < numberOfCase && p >= 0 && p < numberOfPins) {
+		CaseValues[ValueGenNumber][p].Set(value, minValue, maxValue);
+		CaseValues[ValueGenNumber][p].Set((int)value, (int)minValue, (int)maxValue);
 		return true;
 	}
 	return false;
+}
+
+bool Simulator::SetCaseValues(int newCaseNumber, int originalCaseNumber) {
+	bool res = false;
+
+	if (newCaseNumber>=0 && newCaseNumber<numberOfCase 
+		&& originalCaseNumber >= 0 && originalCaseNumber < numberOfCase) {
+		for (int i = 0; i < numberOfPins; i++) {
+			CaseValues[originalCaseNumber][i].Copy(&(CaseValues[newCaseNumber][i]));
+		}
+	}
+
+	return res;
 }
 
 
 bool Simulator::loop() {
 	if (keypad != NULL) {
 		int k = keypad->getKeyN();
-		if (k >= 0 && k < numberOfValueGens) {
-			ValueGenNumber = k;
+		if (k >= 0 && k < numberOfCase) {
+			CaseNumber = k;
 			return true;
 		}
 	}

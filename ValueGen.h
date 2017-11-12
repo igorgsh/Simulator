@@ -12,6 +12,7 @@ public:
 	void Set(double value, double minValue = 0, double maxValue = 0);
 	int GetIntValue();
 	double GetRealValue();
+	void Copy(ValueGen* newValue);
 private:
 	int IntValue;
 	double RealValue;
